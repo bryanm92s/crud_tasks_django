@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+
+            <!--Traemos task desde la vista-->
+            <h1 class="text-secondary">{{task.title}}</h1>
+            {{ error }}
+            
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary">
+                        Update
+                    </button>
+                </form>
+                <div class="d-flex mt-5">
+                <!--Marcar completada la tarea-->
+                <form action={% url 'complete_task' task.id %} method="POST">
+                    {% csrf_token %}
+                    {% if task.datecompleted == NULL %}
+                    <button class="btn btn-secondary">
+                        Completar
+                    </button>
+                    {% endif %}
+                </form>
+    
+                <!--Marcar pendiente una tarea-->
+                <form action={% url 'pending_task' task.id %} method="POST">
+                    {% csrf_token %}
+                    {% if task.datecompleted != NULL %}
+                    <button class="btn btn-secondary">
+                        Marcar pendiente
+                    </button>
+                    {% endif %}
+                </form>
+    
+                <!--Eliminar la tarea-->
+                <form action={% url 'delete_task' task.id %} method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-danger">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}
